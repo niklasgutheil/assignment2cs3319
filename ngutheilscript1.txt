@@ -1,0 +1,18 @@
+--  Script 1 -- 
+ 
+SHOW DATABASES;
+DROP DATABASE ngutheilassign2db;
+CREATE DATABASE ngutheilassign2db;
+USE ngutheilassign2db;
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON ngutheilassign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+SHOW TABLES;
+CREATE TABLE hospital (hosCode CHAR(3), hosName CHAR(20), hosProv CHAR(20), hosCity CHAR(20), hosBeds CHAR(20), headDoc CHAR(4), headDocDate DATE, PRIMARY KEY(hosCode));
+CREATE TABLE doctor(licenseNum CHAR(4), dateLicensed DATE, fName CHAR(20), lName CHAR(20), speciality CHAR(20), worksAt CHAR(3), PRIMARY KEY(licenseNum), FOREIGN KEY(worksAt) REFERENCES hospital(hosCode));
+ALTER TABLE hospital ADD FOREIGN KEY (headDoc) REFERENCES doctor(licenseNum);
+CREATE TABLE patient(ohipNum CHAR(9), fName CHAR(20), lName CHAR(20), PRIMARY KEY (ohipNum));
+CREATE TABLE treating(licenseNum CHAR(4), ohipNum CHAR(9), FOREIGN KEY(licenseNum) REFERENCES doctor (licenseNum) ON DELETE CASCADE, FOREIGN KEY(ohipNum) REFERENCES patient(ohipNum));
+SHOW TABLES;
