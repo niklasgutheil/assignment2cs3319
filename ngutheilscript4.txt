@@ -1,0 +1,13 @@
+-- Script 4 --
+USE ngutheilassign2db;
+CREATE VIEW head_doc_treatments AS SELECT DISTINCT patient.fName AS "Patient's First Name", patient.lName AS "Patient's Last Name", doctor.lName AS "Doctor's Last Name", hospital.hosName AS "Hospital's Name" FROM patient, hospital, doctor, treating WHERE treating.licenseNum = doctor.licenseNum AND doctor.licenseNum = hospital.headDoc AND hospital.headDocDate > '1995-12-31';
+SELECT * FROM head_doc_treatments;
+SELECT * FROM doctor;
+SELECT * FROM treating;
+
+DELETE FROM doctor WHERE lName = "Clooney";
+
+SELECT * FROM doctor;
+SELECT * FROM treating;
+
+DELETE FROM doctor WHERE speciality = "Surgeon";
