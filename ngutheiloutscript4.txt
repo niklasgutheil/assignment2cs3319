@@ -1,0 +1,79 @@
+Warning: Using a password on the command line interface can be insecure.
+ERROR 1451 (23000) at line 13: Cannot delete or update a parent row: a foreign key constraint fails (`ngutheilassign2db`.`hospital`, CONSTRAINT `hospital_ibfk_1` FOREIGN KEY (`headDoc`) REFERENCES `doctor` (`licenseNum`))
+--------------
+CREATE VIEW head_doc_treatments AS SELECT DISTINCT patient.fName AS "Patient's First Name", patient.lName AS "Patient's Last Name", doctor.lName AS "Doctor's Last Name", hospital.hosName AS "Hospital's Name" FROM patient, hospital, doctor, treating WHERE treating.licenseNum = doctor.licenseNum AND doctor.licenseNum = hospital.headDoc AND hospital.headDocDate > '1995-12-31'
+--------------
+
+--------------
+SELECT * FROM head_doc_treatments
+--------------
+
+Patient's First Name	Patient's Last Name	Doctor's Last Name	Hospital's Name
+Bill	Gellar	Shabado	St. Joseph
+Suzi	Brown	Shabado	St. Joseph
+Jon	Green	Shabado	St. Joseph
+Niklas	Gutheil	Shabado	St. Joseph
+Colleen	Gellar	Shabado	St. Joseph
+Sean	Gellar	Shabado	St. Joseph
+Scotty	Bing	Shabado	St. Joseph
+--------------
+SELECT * FROM doctor
+--------------
+
+licenseNum	dateLicensed	fName	lName	speciality	worksAt
+GD56	1960-06-24	Joe	Shabado	Podiatrist	BBC
+HT45	1987-06-20	Ross	Clooney	Surgeon	DDE
+JK78	1990-08-08	Mandy	Webster	Surgeon	BBC
+NG00	1969-07-16	Gregory	House	Diagnostician	ABC
+RD34	1980-09-09	Bernie	Kavorikian	Urologist	BBC
+SE66	1990-08-24	Colleen	Aziz	Surgeon	ABC
+YT67	1955-02-20	Ben	Spock	Pediatrician	DDE
+--------------
+SELECT * FROM treating
+--------------
+
+licenseNum	ohipNum
+GD56	110112113
+HT45	444555666
+JK78	444555666
+SE66	111222333
+HT45	111222333
+JK78	111222333
+GD56	333444555
+HT45	667766777
+JK78	667766777
+GD56	667766777
+HT45	111222111
+NG00	123456789
+--------------
+DELETE FROM doctor WHERE lName = "Clooney"
+--------------
+
+--------------
+SELECT * FROM doctor
+--------------
+
+licenseNum	dateLicensed	fName	lName	speciality	worksAt
+GD56	1960-06-24	Joe	Shabado	Podiatrist	BBC
+JK78	1990-08-08	Mandy	Webster	Surgeon	BBC
+NG00	1969-07-16	Gregory	House	Diagnostician	ABC
+RD34	1980-09-09	Bernie	Kavorikian	Urologist	BBC
+SE66	1990-08-24	Colleen	Aziz	Surgeon	ABC
+YT67	1955-02-20	Ben	Spock	Pediatrician	DDE
+--------------
+SELECT * FROM treating
+--------------
+
+licenseNum	ohipNum
+GD56	110112113
+JK78	444555666
+SE66	111222333
+JK78	111222333
+GD56	333444555
+JK78	667766777
+GD56	667766777
+NG00	123456789
+--------------
+DELETE FROM doctor WHERE speciality = "Surgeon"
+--------------
+
