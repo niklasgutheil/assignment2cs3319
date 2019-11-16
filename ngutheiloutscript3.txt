@@ -1,0 +1,104 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SELECT lName FROM patient
+--------------
+
+lName
+Gellar
+Brown
+Green
+Gutheil
+Gellar
+Gellar
+Bing
+--------------
+SELECT lName FROM patient GROUP BY lName
+--------------
+
+lName
+Bing
+Brown
+Gellar
+Green
+Gutheil
+--------------
+SELECT * FROM doctor ORDER BY lName ASC
+--------------
+
+licenseNum	dateLicensed	fName	lName	speciality	worksAt
+SE66	1990-08-24	Colleen	Aziz	Surgeon	ABC
+HT45	1987-06-20	Ross	Clooney	Surgeon	DDE
+NG00	1969-07-16	Gregory	House	Diagnostician	ABC
+RD34	1980-09-09	Bernie	Kavorikian	Urologist	BBC
+GD56	1960-06-24	Joe	Shabado	Podiatrist	BBC
+YT67	1955-02-20	Ben	Spock	Pediatrician	DDE
+JK78	1990-08-08	Mandy	Webster	Surgeon	BBC
+--------------
+SELECT hosName, hosCode FROM hospital WHERE hosBeds > 1500
+--------------
+
+hosName	hosCode
+Victoria	ABC
+--------------
+SELECT lName, fName FROM doctor WHERE worksAt IN (SELECT hosCode from hospital WHERE hosName = "St. Joseph")
+--------------
+
+lName	fName
+Shabado	Joe
+Webster	Mandy
+Kavorikian	Bernie
+--------------
+SELECT fName, lName FROM patient WHERE lName LIKE 'G%'
+--------------
+
+fName	lName
+Bill	Gellar
+Jon	Green
+Niklas	Gutheil
+Colleen	Gellar
+Sean	Gellar
+--------------
+SELECT hosName, hosCity, fName, lName FROM hospital, doctor WHERE headDoc = licenseNum
+--------------
+
+hosName	hosCity	fName	lName
+Victoria	London	Colleen	Aziz
+St. Joseph	London	Joe	Shabado
+Victoria	Victoria	Ben	Spock
+--------------
+SELECT SUM(hosBeds) AS "Total Number of Beds: " FROM hospital
+--------------
+
+Total Number of Beds: 
+3800
+--------------
+SELECT patient.fname, doctor.fName FROM patient, doctor,  treating, hospital WHERE patient.ohipNum = treating.ohipNum AND treating.licenseNum = doctor.licenseNum AND treating.licenseNum = hospital.headDoc
+--------------
+
+fname	fName
+Bill	Joe
+Colleen	Joe
+Scotty	Joe
+Jon	Colleen
+--------------
+SELECT fName, lName FROM doctor WHERE speciality = "Surgeon" AND worksAt IN (SELECT hosCode FROM hospital WHERE hosName LIKE '%Victoria%')
+--------------
+
+fName	lName
+Ross	Clooney
+Colleen	Aziz
+--------------
+SELECT fName, lName FROM doctor WHERE licenseNum NOT IN (SELECT licenseNum FROM treating)
+--------------
+
+fName	lName
+Bernie	Kavorikian
+Ben	Spock
+--------------
+SELECT fName, lName FROM doctor, treating WHERE doctor.licenseNum = treating.licenseNum GROUP BY doctor.licenseNum HAVING COUNT(*)>1
+--------------
+
+fName	lName
+Joe	Shabado
+Ross	Clooney
+Mandy	Webster
